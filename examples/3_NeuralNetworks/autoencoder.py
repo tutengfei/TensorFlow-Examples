@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 
 # Import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
+
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 
 # Parameters
@@ -27,9 +28,9 @@ display_step = 1
 examples_to_show = 10
 
 # Network Parameters
-n_hidden_1 = 256 # 1st layer num features
-n_hidden_2 = 128 # 2nd layer num features
-n_input = 784 # MNIST data input (img shape: 28*28)
+n_hidden_1 = 256  # 1st layer num features
+n_hidden_2 = 128  # 2nd layer num features
+n_input = 784  # MNIST data input (img shape: 28*28)
 
 # tf Graph input (only pictures)
 X = tf.placeholder("float", [None, n_input])
@@ -69,6 +70,7 @@ def decoder(x):
                                    biases['decoder_b2']))
     return layer_2
 
+
 # Construct model
 encoder_op = encoder(X)
 decoder_op = decoder(encoder_op)
@@ -88,9 +90,10 @@ init = tf.initialize_all_variables()
 # Launch the graph
 with tf.Session() as sess:
     sess.run(init)
-    total_batch = int(mnist.train.num_examples/batch_size)
+    total_batch = int(mnist.train.num_examples / batch_size)
     # Training cycle
     for epoch in range(training_epochs):
+        c = None
         # Loop over all batches
         for i in range(total_batch):
             batch_xs, batch_ys = mnist.train.next_batch(batch_size)
@@ -98,7 +101,7 @@ with tf.Session() as sess:
             _, c = sess.run([optimizer, cost], feed_dict={X: batch_xs})
         # Display logs per epoch step
         if epoch % display_step == 0:
-            print("Epoch:", '%04d' % (epoch+1),
+            print("Epoch:", '%04d' % (epoch + 1),
                   "cost=", "{:.9f}".format(c))
 
     print("Optimization Finished!")
